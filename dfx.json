@@ -1,0 +1,30 @@
+{
+  "canisters": {
+    "cleanskyinitiative_backend": {
+      "candid": "src/cleanskyinitiative_backend/cleanskyinitiative_backend.did",
+      "package": "cleanskyinitiative_backend",
+      "type": "rust"
+    },
+    "cleanskyinitiative_frontend": {
+      "dependencies": [
+        "cleanskyinitiative_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/cleanskyinitiative_frontend/src/index.html"
+      },
+      "source": [
+        "src/cleanskyinitiative_frontend/assets",
+        "dist/cleanskyinitiative_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
