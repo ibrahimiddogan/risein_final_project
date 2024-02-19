@@ -235,7 +235,7 @@ async fn get_events_from_api(city:String) -> String  {
 
     let api_key = "d9768701e8aca30a3ad653026ac052859a08e3687906e20b383a3ff045299625";
     let city = city;
-    let url = format!("https://api.ambeedata.com/latest/by-city?city={}&key={}", city, api_key);
+    let url = format!("https://api.ambeedata.com/latest/by-city?city={}&x-api-key={}", city, api_key);
     let request_headers = vec![];
     
     let request = CanisterHttpRequestArgument {
