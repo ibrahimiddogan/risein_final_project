@@ -1,25 +1,28 @@
 # cleanskyinitiative
 
-Welcome to your new cleanskyinitiative project and to the internet computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+Proje adı: CleanSky Initiative
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+Kimiz:
 
-To learn more before you start working with cleanskyinitiative, see the following documentation available online:
+Ad: Ibrahim Halil Doğan
+Diğer Ekibimiz Üyeleri
+Proje Detayları:
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Rust Canister Development Guide](https://internetcomputer.org/docs/current/developer-docs/backend/rust/)
-- [ic-cdk](https://docs.rs/ic-cdk)
-- [ic-cdk-macros](https://docs.rs/ic-cdk-macros)
-- [Candid Introduction](https://internetcomputer.org/docs/current/developer-docs/backend/candid/)
+CleanSky Initiative, Internet Computer üzerinde çalışacak bir sürdürülebilirlik platformudur. Bu platform, insanları çevre dostu yaşam tarzları konusunda bilinçlendirmek ve sürdürülebilir bir dünya için işbirliği yapmalarını teşvik etmek için tasarlanmıştır.
+Vizyon:
 
-If you want to start working on your project right away, you might want to try the following commands:
+CleanSky Initiative, çekilen verileri kullanarak insanları sürdürülebilirlik konusunda bilgilendirmeyi ve onları bir araya getirerek birlikte hareket etmelerini sağlamayı hedefler. Amacımız, kullanıcıların kendi fikirlerini paylaşabilecekleri, makaleler yazabilecekleri ve birbirleriyle iletişim kurabilecekleri bir platform oluşturarak sürdürülebilir bir dünya için bir adım atmaktır.
+Geliştirme Planı:
 
-```bash
-cd cleanskyinitiative/
-dfx help
-dfx canister --help
-```
+Akıllı Kontrat Fonksiyonları ve Değişkenlerin Tasarımı: Kullanıcı profilleri, makale yazma işlevleri, veri erişimi gibi temel akıllı kontrat fonksiyonları ve değişkenleri tasarlanacak.
+Akıllı Kontrat Geliştirme: Tasarlanan akıllı kontratlar Rust dilinde kodlanacak ve Internet Computer Protocolü kullanılarak test edilecek.
+Kullanıcı Arayüzü Geliştirme: Web tabanlı bir kullanıcı arayüzü oluşturulacak. Kullanıcılar hesaplarını oluşturabilecek, makaleler yazabilecek ve diğer kullanıcılarla etkileşimde bulunabilecekler.
+Arayüz ve Akıllı Kontrat Entegrasyonu: Kullanıcı arayüzü, akıllı kontratlarla entegre edilerek kullanıcıların platform üzerindeki işlemlerini gerçekleştirebilecekleri bir hale getirilecek.
+Beta Testi ve Geri Bildirim: Platform beta testi yapılacak ve kullanıcı geri bildirimleri toplanacak.
+Dağıtım: Platform, testlerin tamamlanmasının ardından ana ağa dağıtılacak ve kullanıma sunulacak.
+Kişisel Hikaye Özeti:
+
+Amacım, Internet Computer üzerinde bir sürdürülebilirlik platformu oluşturarak insanların bir araya gelmesini ve sürdürülebilirlik konusunda fikir alışverişi yapmasını sağlamaktır. İnsanların bilinçlenmelerini ve harekete geçmelerini sağlayarak birlikte daha sürdürülebilir bir dünya yaratmayı hedefliyorum.
 
 ## Running the project locally
 

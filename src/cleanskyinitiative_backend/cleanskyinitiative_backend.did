@@ -1,3 +1,48 @@
-service : {
-    "greet": (text) -> (text) query;
-}
+type Member = record{
+    name:text;
+    lastname:text;
+    email:text;
+    registration_month:nat32;
+};
+
+type Article = record{
+    author_name: text;
+    author_lastname: text;
+    email: text;
+    content: text;
+};
+type ArticleErrors = record {
+    MissingBlank: text;
+    NotAllowed: text;
+};
+
+type ArticleResult = variant {
+    Success: text;
+    Error: ArticleErrors;
+};
+
+type MemberErrors = variant {
+    MissingBlank: text;
+};
+type MemberResult = variant {
+    Success: text;
+    Error: MemberErrors;
+};
+type Result = 
+    variant {
+        Ok:MemberResult;
+        Err: MemberErrors;
+    };
+type Badgets = variant {
+    NewMember;
+    ContributingMember;
+    SeniorMember;
+};
+service :{
+    "create_member":(text,text,text,nat32)-> (Result);
+    "list_members":()->(vec Member) query;
+    "get_new_members":()->(vec Member) query;
+    "publish_article":(text,text,text,text)->(Result);
+    "get_article":(text,text,text)->(Result) query;
+    "get_events_from_api":(text)->(text);
+};
