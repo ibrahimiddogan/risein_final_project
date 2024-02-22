@@ -48,7 +48,7 @@ thread_local! {
     );
     static Article_Map: RefCell<StableBTreeMap<u64, Article, Memory>> = RefCell::new(
         StableBTreeMap::init(
-            MEMORY_MANAGER.with(|p| p.borrow().get(MemoryId::new(1))), 
+            MEMORY_MANAGER.with(|p| p.borrow().get(MemoryId::new(2))), 
         )
     );
 }
