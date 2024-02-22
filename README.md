@@ -1,28 +1,46 @@
 # cleanskyinitiative
 
-Proje adı: CleanSky Initiative
 
-Kimiz:
+PProject Name: CleanSky Initiative
 
-Ad: Ibrahim Halil Doğan
-Diğer Ekibimiz Üyeleri
-Proje Detayları:
+About Us:
 
-CleanSky Initiative, Internet Computer üzerinde çalışacak bir sürdürülebilirlik platformudur. Bu platform, insanları çevre dostu yaşam tarzları konusunda bilinçlendirmek ve sürdürülebilir bir dünya için işbirliği yapmalarını teşvik etmek için tasarlanmıştır.
-Vizyon:
+Name: Ibrahim Halil Doğan
 
-CleanSky Initiative, çekilen verileri kullanarak insanları sürdürülebilirlik konusunda bilgilendirmeyi ve onları bir araya getirerek birlikte hareket etmelerini sağlamayı hedefler. Amacımız, kullanıcıların kendi fikirlerini paylaşabilecekleri, makaleler yazabilecekleri ve birbirleriyle iletişim kurabilecekleri bir platform oluşturarak sürdürülebilir bir dünya için bir adım atmaktır.
-Geliştirme Planı:
+Project Details:
+CleanSky Initiative is a sustainability platform designed to operate on the Internet Computer. This platform is intended to raise awareness about eco-friendly lifestyles and encourage collaboration for a sustainable world.
 
-Akıllı Kontrat Fonksiyonları ve Değişkenlerin Tasarımı: Kullanıcı profilleri, makale yazma işlevleri, veri erişimi gibi temel akıllı kontrat fonksiyonları ve değişkenleri tasarlanacak.
-Akıllı Kontrat Geliştirme: Tasarlanan akıllı kontratlar Rust dilinde kodlanacak ve Internet Computer Protocolü kullanılarak test edilecek.
-Kullanıcı Arayüzü Geliştirme: Web tabanlı bir kullanıcı arayüzü oluşturulacak. Kullanıcılar hesaplarını oluşturabilecek, makaleler yazabilecek ve diğer kullanıcılarla etkileşimde bulunabilecekler.
-Arayüz ve Akıllı Kontrat Entegrasyonu: Kullanıcı arayüzü, akıllı kontratlarla entegre edilerek kullanıcıların platform üzerindeki işlemlerini gerçekleştirebilecekleri bir hale getirilecek.
-Beta Testi ve Geri Bildirim: Platform beta testi yapılacak ve kullanıcı geri bildirimleri toplanacak.
-Dağıtım: Platform, testlerin tamamlanmasının ardından ana ağa dağıtılacak ve kullanıma sunulacak.
-Kişisel Hikaye Özeti:
+Development Plan:
+Design of Smart Contract Functions and Variables: Basic smart contract functions and variables such as user profiles, article writing functions, and data access will be designed.
 
-Amacım, Internet Computer üzerinde bir sürdürülebilirlik platformu oluşturarak insanların bir araya gelmesini ve sürdürülebilirlik konusunda fikir alışverişi yapmasını sağlamaktır. İnsanların bilinçlenmelerini ve harekete geçmelerini sağlayarak birlikte daha sürdürülebilir bir dünya yaratmayı hedefliyorum.
+
+Project Name: CleanSky Initiative
+
+About Us:
+
+Name: Ibrahim Halil Doğan
+
+Project Details:
+CleanSky Initiative is a sustainability platform designed to operate on the Internet Computer. This platform is intended to raise awareness about eco-friendly lifestyles and encourage collaboration for a sustainable world.
+
+Vision:
+CleanSky Initiative aims to inform people about sustainability using collected data and to bring them together to act together. Our goal is to create a platform where users can share their ideas, write articles, and communicate with each other, taking a step towards a sustainable world.
+
+Development Plan:
+Design of Smart Contract Functions and Variables: Basic smart contract functions and variables such as user profiles, article writing functions, and data access will be designed.
+
+Smart Contract Development: The designed smart contracts will be coded in the Rust language and tested using the Internet Computer Protocol.
+
+User Interface Development: A web-based user interface will be created. Users will be able to create accounts, write articles, and interact with other users.
+
+Integration of Interface and Smart Contracts: The user interface will be integrated with smart contracts to enable users to perform transactions on the platform.
+
+Beta Testing and Feedback: The platform will undergo beta testing, and user feedback will be collected.
+
+Deployment: After completing the tests, the platform will be deployed to the main network and made available for use.
+
+Personal Story Summary:
+My goal is to create a sustainability platform on the Internet Computer that brings people together to exchange ideas about sustainability. By raising awareness and inspiring action, I aim to collectively create a more sustainable world.
 
 ## Running the project locally
 

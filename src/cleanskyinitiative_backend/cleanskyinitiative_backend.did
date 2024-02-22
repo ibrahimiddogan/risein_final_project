@@ -7,42 +7,38 @@ type Member = record{
 
 type Article = record{
     author_name: text;
-    author_lastname: text;
     email: text;
-    content: text;
-};
-type ArticleErrors = record {
-    MissingBlank: text;
-    NotAllowed: text;
+    tittle:text;
+    content:text;
 };
 
-type ArticleResult = variant {
-    Success: text;
-    Error: ArticleErrors;
-};
-
-type MemberErrors = variant {
+type Errors = variant {
     MissingBlank: text;
+    SameEmail:text;
+    NotAllowed:text;
+    TittleNot:text;
 };
-type MemberResult = variant {
+type Ok = variant {
     Success: text;
-    Error: MemberErrors;
+    Article:Article;
 };
 type Result = 
     variant {
-        Ok:MemberResult;
-        Err: MemberErrors;
+        Ok:Ok;
+        Err: Errors;
     };
 type Badgets = variant {
-    NewMember;
-    ContributingMember;
-    SeniorMember;
+    NewMember:text;
+    ContributingMember:text;
+    SeniorMember:text;
 };
 service :{
-    "create_member":(text,text,text,nat32)-> (Result);
-    "list_members":()->(vec Member) query;
-    "get_new_members":()->(vec Member) query;
+    "create_member":(text,text,text)-> (Result);
+    "list_members_name": () -> (vec text) query;
+    "list_members_lastname": () -> (vec text) query;
+    "get_new_members_name":()->(vec text) query;
+    "get_new_members_lastname":()->(vec text) query;
     "publish_article":(text,text,text,text)->(Result);
-    "get_article":(text,text,text)->(Result) query;
-    "get_events_from_api":(text)->(text);
+    "get_article":()->(vec text) query;
+    "get_events__city_from_api":(text)->(text);
 };

@@ -7,7 +7,6 @@ use serde_json::Value;
 use candid::{CandidType, Decode, Deserialize, Encode, Nat};
 use ic_stable_structures::memory_manager::{MemoryId, MemoryManager, VirtualMemory};
 use ic_stable_structures::{BoundedStorable, DefaultMemoryImpl, StableBTreeMap, Storable};
-use std::ptr::null;
 use std::{borrow::Cow, cell::RefCell}; 
 
 impl Storable for Member {
@@ -29,14 +28,13 @@ impl Storable for Article {
     }
 }
 type Memory = VirtualMemory<DefaultMemoryImpl>;
-const MAX_VALUE_SIZE: u32 = 100;
 impl BoundedStorable for Article {
-    const MAX_SIZE: u32 = MAX_VALUE_SIZE; 
+    const MAX_SIZE: u32 = 100; 
     const IS_FIXED_SIZE: bool = false;
 }
 
 impl BoundedStorable for Member {
-    const MAX_SIZE: u32 = MAX_VALUE_SIZE; 
+    const MAX_SIZE: u32 = 100; 
     const IS_FIXED_SIZE: bool = false;
 }
 thread_local! {
@@ -63,95 +61,122 @@ struct Member{
     email:String,
     registration_month: u32, 
 }
-#[derive(CandidType, Deserialize,Clone)]
+#[derive(CandidType, Deserialize,Clone,Debug)]
 struct Article {
     author_name: String,
-    author_lastname: String,
     email: String,
-    content: String,
+    tittle:String,
+    content:String,
 }
 #[derive(CandidType, Deserialize)]
-enum ArticleErrors {
+enum Errors {
     MissingBlank(String),
+    SameEmail(String),
     NotAllowed(String),
+    TittleNot(String),
 }
-
-#[derive(CandidType, Deserialize)]
-enum ArticleResult {
-    Success(String),
-    Error(ArticleErrors),
-}
-
-#[derive(CandidType, Deserialize)]
-enum MemberErrors {
-    MissingBlank(String)
-}
-#[derive(CandidType, Deserialize)]
+#[derive(CandidType, Deserialize,Clone)]
 enum Badgets {
-    NewMember,
-    ContributingMember,
-    SeniorMember
+    NewMember(String),
+    ContributingMember(String),
+    SeniorMember(String),
 }
 #[derive(CandidType, Deserialize)]
-
-enum MemberResult {
+enum Ok {
     Success(String),
-    Error(MemberErrors),
+    Article(Article),
 }
 #[ic_cdk::update]
-fn create_member(name:String,lastname:String,email:String,registration_month:u32) ->  Result<MemberResult, MemberErrors> {
+fn create_member(name:String,lastname:String,email:String) -> Result<Ok, Errors> {
             if name.is_empty() || lastname.is_empty() || email.is_empty()  {
-                return Err(MemberErrors::MissingBlank("İstenilen boşluklardan birini doldurmadınız".to_string()));
+                return Err(Errors::MissingBlank("İstenilen boşluklardan birini doldurmadınız".to_string()));
             }
-            let _badge = match registration_month {
-                0..=1 => Badgets::NewMember,
-                2..=3 => Badgets::ContributingMember,
-                _ => Badgets::SeniorMember,
-            };
+            let email_exists = Member_Map.with(|p| {
+                let member_map = p.borrow();
+                member_map.iter().any(|(_, member)| member.email == email)
+            });
+            
+            if email_exists {
+                return Err(Errors::SameEmail("Girilen e-posta adresi zaten mevcut".to_string()));
+            }           
            Member_Map.with(|p|{
             let mut member_map = p.borrow_mut();
+
+            let registration_month=1;
+            let badget = "New Member".to_string();
+            
             let new_member = Member{
                 name:name,
                 lastname:lastname,
                 email:email,
                 registration_month:registration_month, 
             };
+            
             let new_member_id=member_map.len();
-        member_map.insert(new_member_id,new_member);
+            member_map.insert(new_member_id,new_member);
            });
-           Ok(MemberResult::Success("Üyeliğiniz başarıyla oluşturuldu".to_string()))
+           Ok(Ok::Success("Üyeliğiniz başarıyla oluşturuldu".to_string()))
  }
 
  #[ic_cdk::query]
-fn list_members() -> Vec<Member> {
+fn list_members_name() -> Vec<(String)> {
     let mut members = Vec::new();
     Member_Map.with(|p|{
         let member_map = p.borrow();
         for (_, member) in member_map.iter() {
-            members.push(member.clone());
+            members.push((member.name.clone()));
         }
     });
     members
 }
 #[ic_cdk::query]
-fn get_new_members() -> Vec<Member> {
+fn list_members_lastname() -> Vec<(String)> {
+    let mut members = Vec::new();
+    Member_Map.with(|p|{
+        let member_map = p.borrow();
+        for (_, member) in member_map.iter() {
+            members.push((member.lastname.clone()));
+        }
+    });
+    members
+}
+
+#[ic_cdk::query]
+fn get_new_members_name() -> Vec<(String)> {
     let mut new_members = Vec::new();
     
     Member_Map.with(|p| {
         let member_map = p.borrow();
         for (_, member) in member_map.iter() {
-            if member.registration_month <= 1 {
-                new_members.push(member.clone());
+            if member.registration_month<=2 {
+                new_members.push(member.name.clone());
             }
         }
     });
     
     new_members
 }
+#[ic_cdk::query]
+fn get_new_members_lastname() -> Vec<(String)> {
+    let mut new_members = Vec::new();
+    
+    Member_Map.with(|p| {
+        let member_map = p.borrow();
+        for (_, member) in member_map.iter() {
+            if member.registration_month<=2{
+                new_members.push(member.lastname.clone());
+            }
+        }
+    });
+    
+    new_members
+}
+
+
 #[ic_cdk::update]
-fn publish_article(name: String, lastname: String, email: String, article_content: String) -> Result<String, String> {
-    if name.is_empty() || lastname.is_empty() || email.is_empty() || article_content.is_empty() {
-        return Err("Tüm alanları doldurmalısınız".to_string());
+fn publish_article(name: String,email: String,tittle:String,content:String) -> Result<Ok, Errors> {
+    if name.is_empty() || email.is_empty() ||  tittle.is_empty() {
+        return Err(Errors::MissingBlank("Tüm alanları doldurmalısınız".to_string()));
     }
 
     let mut member_found = false;
@@ -167,75 +192,46 @@ fn publish_article(name: String, lastname: String, email: String, article_conten
     });
 
     if !member_found {
-        return Err("Makale yayınlamak için kayıtlı bir üye olmalısınız".to_string());
+        return Err(Errors::NotAllowed("Makale yayınlamak için kayıtlı bir üye olmalısınız".to_string()));
     }
 
     
-    let article = Article {
-        author_name: name,
-        author_lastname: lastname,
-        email: email,
-        content: article_content,
-    };
-
-   
-    Ok("Makaleniz başarıyla yayınlandı".to_string())
+    Article_Map.with(|p|{
+        let mut article_map = p.borrow_mut();
+        let new_article = Article{
+            author_name:name,
+            email:email,
+            tittle:tittle,
+            content:content,
+        };
+        
+        let new_article_id=article_map.len();
+        article_map.insert(new_article_id,new_article);
+       });
+    Ok(Ok::Success("Makaleniz başarıyla yayınlandı".to_string()))
 }
+
 #[ic_cdk::query]
-fn get_article(name: String, lastname: String, email: String) -> Result<Article, String> {
-    if name.is_empty() || lastname.is_empty() || email.is_empty() {
-        return Err("Tüm alanları doldurmalısınız".to_string());
-    }
-
-    let mut member_found = false;
-    let mut article_found = false;
-    let mut article_content = String::new();
-
-    Member_Map.with(|p| {
-        let member_map = p.borrow();
-        for (_, member) in member_map.iter() {
-            if member.email == email {
-                member_found = true;
-                break;
-            }
+fn get_article() -> Vec<String> {
+    let mut new_article = Vec::new();
+    
+    Article_Map.with(|p| {
+        let article_map = p.borrow();
+        for (_, article) in article_map.iter() {
+            
+                new_article.push(article.content.clone());
         }
     });
-
-    if member_found {
-        Article_Map.with(|p| {
-            let article_map = p.borrow();
-            for (_, article) in article_map.iter() {
-                if article.email == email {
-                    article_found = true;
-                    article_content = article.content.clone();
-                    break;
-                }
-            }
-        });
-    }
-
-    if !member_found {
-        return Err("Kullanıcı bulunamadı".to_string());
-    }
-
-    if !article_found {
-        return Err("Makale bulunamadı".to_string());
-    }
-
-    Ok(Article {
-        author_name: name,
-        author_lastname: lastname,
-        email: email,
-        content: article_content,
-    })
+    
+    new_article
 }
-#[ic_cdk::update]
-async fn get_events_from_api(city:String) -> String  {
-    // Setup the URL for the HTTP GET request
 
+#[ic_cdk::update]
+async fn get_events__city_from_api(city:String) -> String  {
     let api_key = "d9768701e8aca30a3ad653026ac052859a08e3687906e20b383a3ff045299625";
     let city = city;
-    let url = format!("https://api.ambeedata.com/latest/by-city?city={}&x-api-key={}", city, api_key);
+    
+    let url = format!("https://api.ambeedata.com/latest/by-city?city={}&x-api-key={}",city,api_key);
     let request_headers = vec![];
     
     let request = CanisterHttpRequestArgument {
@@ -247,7 +243,7 @@ async fn get_events_from_api(city:String) -> String  {
         headers:request_headers ,
     };
 
-    let response = match http_request(request, 1_603_096_000).await {
+    let response = match http_request(request, 1_603_112_400).await {
         Ok(response) => response.0,
         Err(_) => return "HTTP isteği başarısız oldu".to_string(), 
     };
@@ -261,9 +257,8 @@ async fn get_events_from_api(city:String) -> String  {
         Some(value) => value,
         None => return "AQI değeri bulunamadı".to_string(), 
     };
-    format!("Şehrinizin hava indeksi={} (AQI)", aqi)
+    format!("Şehrinizin hava kirliliği={} (AQI)", aqi)
 }
-
 
 
 
