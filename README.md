@@ -1,7 +1,7 @@
 # cleanskyinitiative
 
 
-PProject Name: CleanSky Initiative
+Project Name: CleanSky Initiative
 
 About Us:
 
