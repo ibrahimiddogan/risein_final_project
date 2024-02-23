@@ -1,0 +1,185 @@
+.navbar {
+  background-color: #333;
+  width: 200px;
+  height: 100vh; /* Full height */
+  position: fixed; /* Stay in place */
+  top: 0; /* Stay at the top */
+  left: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding: 20px;
+  border-right: 4px solid 2px;
+}
+.text_info {
+  color: #fff;
+  text-align: center;
+}
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  width: 100px;
+}
+
+.navbar-nav {
+  list-style-type: none;
+  padding: 0;
+}
+
+.navbar-nav li {
+  margin-bottom: 10px;
+}
+
+.navbar-nav li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-nav li a:hover {
+  background-color: #555;
+}
+
+.logo:hover {
+  opacity: 85%;
+  cursor: pointer;
+}
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo_text {
+  color: rgba(13, 255, 207, 1);
+  letter-spacing: 1px;
+  padding: 5px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.navbar {
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+}
+
+.navbar-nav {
+  list-style-type: none;
+  padding: 0;
+}
+
+.navbar-nav li {
+  margin-bottom: 10px;
+}
+
+.navbar-nav li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-nav li a:hover {
+  background-color: #555;
+}
+
+.signup-form {
+  position: absolute;
+  left: 30%;
+  top: 7%;
+  background-color: #333;
+  padding: 40px;
+  width: 600px;
+  height: 500px;
+}
+
+.signup-form h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: rgba(13, 255, 207, 1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex; /* Yatay hizalama için flexbox */
+  align-items: center; /* Dikey hizalamayı ayarla */
+  color: #fff;
+}
+
+.form-group label {
+  flex: 1; /* Etiketin esnek genişliği */
+  font-weight: bold;
+  margin-right: 10px; /* Boşluk ekleyin */
+}
+
+.form-group input {
+  flex: 2; /* Girişin esnek genişliği */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 13px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(13, 255, 207, 1);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+button[type="submit"]:hover {
+  background-color: gray;
+}
+
+.user-list {
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100vh;
+}
+
+.user-list h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: rgba(13, 255, 207, 1);
+}
+
+.user-list ul {
+  padding: 0;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.user-list ul li {
+  padding: 10px;
+  border-bottom: 1px solid #555;
+}
+
+.user-list ul li:last-child {
+  border-bottom: none;
+}

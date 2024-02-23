@@ -27,6 +27,15 @@ impl Storable for Article {
         Decode!(bytes.as_ref(), Self).unwrap()
     }
 }
+impl Storable for ForumMessage {
+    fn to_bytes(&self) -> Cow<[u8]> {
+        Cow::Owned(Encode!(self).unwrap())
+    }
+
+    fn from_bytes(bytes: Cow<[u8]>) -> Self {
+        Decode!(bytes.as_ref(), Self).unwrap()
+    }
+}
 type Memory = VirtualMemory<DefaultMemoryImpl>;
 impl BoundedStorable for Article {
     const MAX_SIZE: u32 = 100; 
@@ -34,6 +43,10 @@ impl BoundedStorable for Article {
 }
 
 impl BoundedStorable for Member {
+    const MAX_SIZE: u32 = 100; 
+    const IS_FIXED_SIZE: bool = false;
+}
+impl BoundedStorable for ForumMessage {
     const MAX_SIZE: u32 = 100; 
     const IS_FIXED_SIZE: bool = false;
 }
@@ -48,9 +61,15 @@ thread_local! {
     );
     static Article_Map: RefCell<StableBTreeMap<u64, Article, Memory>> = RefCell::new(
         StableBTreeMap::init(
-            MEMORY_MANAGER.with(|p| p.borrow().get(MemoryId::new(1))), 
+            MEMORY_MANAGER.with(|p| p.borrow().get(MemoryId::new(2))), 
         )
     );
+    static FORUM_MESSAGES: RefCell<StableBTreeMap<u64, ForumMessage, Memory>> = RefCell::new(
+        StableBTreeMap::init(
+            MEMORY_MANAGER.with(|p| p.borrow().get(MemoryId::new(3))), 
+        )
+    );
+    
 }
 
 
@@ -63,17 +82,24 @@ struct Member{
 }
 #[derive(CandidType, Deserialize,Clone,Debug)]
 struct Article {
-    author_name: String,
     email: String,
     tittle:String,
     content:String,
+
 }
+#[derive(CandidType, Deserialize, Clone, Debug)]
+struct ForumMessage {
+    author: String,
+    content: String,
+}
+
 #[derive(CandidType, Deserialize)]
 enum Errors {
     MissingBlank(String),
     SameEmail(String),
     NotAllowed(String),
     TittleNot(String),
+    InvalidEmail(String),
 }
 #[derive(CandidType, Deserialize,Clone)]
 enum Badgets {
@@ -90,6 +116,9 @@ enum Ok {
 fn create_member(name:String,lastname:String,email:String) -> Result<Ok, Errors> {
             if name.is_empty() || lastname.is_empty() || email.is_empty()  {
                 return Err(Errors::MissingBlank("İstenilen boşluklardan birini doldurmadınız".to_string()));
+            }
+            if !email.contains('@') {
+                return Err(Errors::InvalidEmail("Geçersiz e-posta adresi formatı".to_string()));
             }
             let email_exists = Member_Map.with(|p| {
                 let member_map = p.borrow();
@@ -118,6 +147,50 @@ fn create_member(name:String,lastname:String,email:String) -> Result<Ok, Errors>
            Ok(Ok::Success("Üyeliğiniz başarıyla oluşturuldu".to_string()))
  }
 
+ #[ic_cdk::update]
+ fn delete_member_by_email(email: String) -> Result<Ok, Errors> {
+     if email.is_empty() {
+         return Err(Errors::MissingBlank("E-posta adresi girilmedi".to_string()));
+     }
+     
+     let mut member_found = false;
+ 
+     Member_Map.with(|p| {
+         let mut member_map = p.borrow_mut();
+         let mut keys_to_remove = Vec::new();
+ 
+         for (key, member) in member_map.iter() {
+             if member.email == email {
+                 keys_to_remove.push(key);
+                 member_found = true;
+             }
+         }
+ 
+         for key in keys_to_remove {
+             member_map.remove(&key);
+         }
+     });
+ 
+     if !member_found {
+         return Err(Errors::NotAllowed("Girilen e-posta adresine sahip bir kullanıcı bulunamadı".to_string()));
+     }
+ 
+     Ok(Ok::Success("Kullanıcı başarıyla silindi".to_string()))
+ }
+ 
+ 
+ #[ic_cdk::query]
+fn list_members() -> Vec<Member> {
+    let mut members = Vec::new();
+    Member_Map.with(|p|{
+        let member_map = p.borrow();
+        for (_, member) in member_map.iter() {
+            members.push(member.clone());
+        }
+    });
+    members
+}
+ 
  #[ic_cdk::query]
 fn list_members_name() -> Vec<(String)> {
     let mut members = Vec::new();
@@ -136,6 +209,17 @@ fn list_members_lastname() -> Vec<(String)> {
         let member_map = p.borrow();
         for (_, member) in member_map.iter() {
             members.push((member.lastname.clone()));
+        }
+    });
+    members
+}
+#[ic_cdk::query]
+fn list_members_email() -> Vec<(String)> {
+    let mut members = Vec::new();
+    Member_Map.with(|p|{
+        let member_map = p.borrow();
+        for (_, member) in member_map.iter() {
+            members.push((member.email.clone()));
         }
     });
     members
@@ -174,8 +258,8 @@ fn get_new_members_lastname() -> Vec<(String)> {
 
 
 #[ic_cdk::update]
-fn publish_article(name: String,email: String,tittle:String,content:String) -> Result<Ok, Errors> {
-    if name.is_empty() || email.is_empty() ||  tittle.is_empty() {
+fn publish_article(email: String,tittle:String,content:String) -> Result<Ok, Errors> {
+    if content.is_empty() || email.is_empty() ||  tittle.is_empty() {
         return Err(Errors::MissingBlank("Tüm alanları doldurmalısınız".to_string()));
     }
 
@@ -199,7 +283,6 @@ fn publish_article(name: String,email: String,tittle:String,content:String) -> R
     Article_Map.with(|p|{
         let mut article_map = p.borrow_mut();
         let new_article = Article{
-            author_name:name,
             email:email,
             tittle:tittle,
             content:content,
@@ -211,23 +294,76 @@ fn publish_article(name: String,email: String,tittle:String,content:String) -> R
     Ok(Ok::Success("Makaleniz başarıyla yayınlandı".to_string()))
 }
 
+
 #[ic_cdk::query]
-fn get_article() -> Vec<String> {
+fn get_article() -> Vec<Article> {
     let mut new_article = Vec::new();
     
     Article_Map.with(|p| {
-        let article_map = p.borrow();
+        let  article_map = p.borrow();
         for (_, article) in article_map.iter() {
-            
-                new_article.push(article.content.clone());
+            new_article.push(article.clone());
         }
     });
     
     new_article
 }
 
+
+
 #[ic_cdk::update]
-async fn get_events__city_from_api(city:String) -> String  {
+fn post_forum_message(user_email: String, message_content: String) -> Result<Ok, Errors> {
+    if message_content.is_empty() {
+        return Err(Errors::MissingBlank("Mesaj içeriği boş olamaz".to_string()));
+    }
+
+    let mut member_found = false;
+
+    Member_Map.with(|p| {
+        let member_map = p.borrow();
+        for (_, member) in member_map.iter() {
+            if member.email == user_email {
+                member_found = true;
+                break;
+            }
+        }
+    });
+
+    if !member_found {
+        return Err(Errors::NotAllowed("Forumda mesaj gönderebilmek için kayıtlı bir üye olmalısınız".to_string()));
+    }
+
+    let new_forum_message = ForumMessage {
+        author: user_email.clone(),
+        content: message_content.clone(),
+    };
+   
+    // Forum mesajlarını saklamak için bir vektör kullanıyoruz
+    FORUM_MESSAGES.with(|forum_messages| {
+        let mut forum_messages = forum_messages.borrow_mut();
+        let new_forum_id=forum_messages.len();
+        forum_messages.insert(new_forum_id,new_forum_message);
+    });
+
+    Ok(Ok::Success("Mesajınız başarıyla foruma gönderildi".to_string()))
+}
+
+#[ic_cdk::query]
+fn get_forum_messages() -> Vec<ForumMessage> {
+    let mut new_forum = Vec::new();
+    
+    FORUM_MESSAGES.with(|p| {
+        let  forum_message = p.borrow();
+        for (_, forum) in forum_message.iter() {
+            new_forum.push(forum.clone());
+        }
+    });
+    
+    new_forum
+}
+
+#[ic_cdk::update]
+async fn get_events_city_from_api(city:String) -> String  {
     let api_key = "d9768701e8aca30a3ad653026ac052859a08e3687906e20b383a3ff045299625";
     let city = city;
     
@@ -257,7 +393,17 @@ async fn get_events__city_from_api(city:String) -> String  {
         Some(value) => value,
         None => return "AQI değeri bulunamadı".to_string(), 
     };
-    format!("Şehrinizin hava kirliliği={} (AQI)", aqi)
+
+    match aqi {
+        0.0..=50.0 => format!("Şehrinizin hava kirliliği={} \n
+        Hava kalitesi iyi, semptom bulunmamaktadır.  ", aqi),
+        51.0..=100.0 => format!("Şehrinizin hava kirliliği={} \n
+        Hafif kirlilik, bazı hassas kişilerde semptomlar görülebilir.  ", aqi),
+        101.0..=151.0 => format!("Şehrinizin hava kirliliği={} \n
+        Orta düzeyde kirlilik, hassas kişilerde semptomlar artabilir.  ", aqi),
+        _ => format!("Şehrinizin hava kirliliği={} \n
+        Yüksek kirlilik, genel nüfusta semptomlar görülebilir.  ", aqi),   
+    }
 }
 
 

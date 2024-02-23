@@ -2,8 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>cleanskyinitiative</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="signup.css" />
     <style>
       body {
         margin: 0;
@@ -11,16 +12,11 @@
         box-sizing: border-box;
         font-family: Arial, sans-serif;
         position: relative;
-        background: url("sky-nature-wallpaper-phone.jpg");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
+        background-color: #555;
+
         height: 100dvh;
       }
     </style>
-    <base href="/" />
-
-    <link rel="stylesheet" href="main.css" />
   </head>
   <body>
     <nav class="navbar">
@@ -50,29 +46,41 @@
         </li>
       </ul>
     </nav>
-
-    <div class="form__getCity-wrapper">
+    <div class="signup-form">
       <div class="logo">
         <img src="logo-removebg-preview.png" alt="Logo" />
         <p class="logo_text">CleanSky Initiative</p>
       </div>
-
-      <form class="form__getCity">
-        <label class="label__getCity" for="">City Name: </label>
-        <input type="text" class="input__getCity" />
-        <button type="submit" class="btn__getCity">Get City Data</button>
-        <p class="pollution__desc">
-          Please enter your city to learn about the air pollution in your city.
-        </p>
-      </form>
-
-      <div class="pollution__info__wrapper">
-        <div class="logo">
-          <img src="logo-removebg-preview.png" alt="Logo" />
+      <h2>Sign Up</h2>
+      <form>
+        <div class="form-group">
+          <label for="first_name">First Name:</label>
+          <input type="text" id="first_name" name="first_name" required />
         </div>
-        <p class="pollution__info">Air pollution in your city = 00</p>
-      </div>
+        <div class="form-group">
+          <label for="last_name">Last Name:</label>
+          <input type="text" id="last_name" name="last_name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="text" id="email" name="email" required />
+        </div>
+        <button class="button_signup" type="submit">Sign Up</button>
+        <p class="text_info"></p>
+      </form>
     </div>
-    <script type="module" src="index.js"></script>
+    <!-- Sağdaki Kullanıcı Listesi -->
+    <div class="user-list">
+      <h2>Members</h2>
+      <ul>
+        <!-- <li>
+          <span class="text_name">Cem</span>
+          <span class="text_lastName">Kandemir</span>
+        </li>
+        <li>User 2</li>
+        <li>User 3</li>
+        Diğer kullanıcılar... -->
+      </ul>
+    </div>
   </body>
 </html>

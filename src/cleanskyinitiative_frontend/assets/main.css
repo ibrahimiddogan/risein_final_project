@@ -1,37 +1,146 @@
-body {
-    font-family: sans-serif;
-    font-size: 1.5rem;
+.navbar {
+  background-color: #333;
+  width: 200px;
+  height: 100vh; /* Full height */
+  position: fixed; /* Stay in place */
+  top: 0; /* Stay at the top */
+  left: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding: 20px;
 }
 
-img {
-    max-width: 50vw;
-    max-height: 25vw;
-    display: block;
-    margin: auto;
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-form {
-    display: flex;
-    justify-content: center;
-    gap: 0.5em;
-    flex-flow: row wrap;
-    max-width: 40vw;
-    margin: auto;
-    align-items: baseline;
+.logo img {
+  width: 100px;
 }
 
-button[type="submit"] {
-    padding: 5px 20px;
-    margin: 10px auto;
-    float: right;
+.navbar-nav {
+  list-style-type: none;
+  padding: 0;
 }
 
-#greeting {
-    margin: 10px auto;
-    padding: 10px 60px;
-    border: 1px solid #222;
+.navbar-nav li {
+  margin-bottom: 10px;
 }
 
-#greeting:empty {
-    display: none;
+.navbar-nav li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-nav li a:hover {
+  background-color: #555;
+}
+
+.logo:hover {
+  opacity: 85%;
+  cursor: pointer;
+}
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo_text {
+  color: rgba(13, 255, 207, 1);
+  letter-spacing: 1px;
+  padding: 5px;
+}
+
+.form-top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.form__getCity-wrapper {
+  background-color: #333;
+  position: absolute;
+  left: 60%;
+  transform: translateX(-50%);
+  top: 8%;
+  border-radius: 18px;
+  padding: 40px;
+  color: #fff;
+  width: 500px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px;
+  letter-spacing: 1px;
+}
+
+.btn__getCity {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  margin-left: 10px;
+  background-color: #555;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn__getCity:hover {
+  background-color: rgba(13, 255, 207, 1);
+  color: #555;
+}
+.btn__getCity:disabled {
+  background-color: gray;
+  color: #333;
+  cursor: not-allowed;
+}
+.label__getCity {
+  font-size: 15px;
+  margin-right: 5px;
+}
+
+.input__getCity {
+  padding: 10px 15px;
+  outline: none;
+  border-radius: 8px;
+  border: 2px solid #555;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+.input__getCity:focus {
+  border-color: rgba(13, 255, 207, 1);
+}
+.pollution__desc {
+  font-size: 10px;
+  font-style: italic;
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 5px 0px;
+  border-radius: 5px;
+}
+.pollution__info__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  margin-top: 20px;
+
+  border-radius: 12px;
+  padding: 16px;
+  width: 400px;
+}
+.pollution__info {
+  font-size: 14px;
+  font-style: normal;
+
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-align: center;
 }

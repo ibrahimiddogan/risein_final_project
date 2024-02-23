@@ -10,6 +10,15 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 const frontendDirectory = "cleanskyinitiative_frontend";
 
 const frontend_entry = path.join("src", frontendDirectory, "src", "index.html");
+const signup_entry = path.join("src", frontendDirectory, "src", "signup.html");
+const article_entry = path.join(
+  "src",
+  frontendDirectory,
+  "src",
+  "article.html"
+);
+const forum_entry = path.join("src", frontendDirectory, "src", "forum.html");
+const about_entry = path.join("src", frontendDirectory, "src", "about.html");
 
 module.exports = {
   target: "web",
@@ -18,6 +27,10 @@ module.exports = {
     // The frontend.entrypoint points to the HTML file for this build, so we need
     // to replace the extension to `.js`.
     index: path.join(__dirname, frontend_entry).replace(/\.html$/, ".js"),
+    signup: path.join(__dirname, signup_entry).replace(/\.html$/, ".js"),
+    article: path.join(__dirname, article_entry).replace(/\.html$/, ".js"),
+    forum: path.join(__dirname, forum_entry).replace(/\.html$/, ".js"),
+    about: path.join(__dirname, about_entry).replace(/\.html$/, ".js"),
   },
   devtool: isDevelopment ? "source-map" : false,
   optimization: {
@@ -35,7 +48,7 @@ module.exports = {
     },
   },
   output: {
-    filename: "index.js",
+    filename: "[name].js",
     path: path.join(__dirname, "dist", frontendDirectory),
   },
 
@@ -53,7 +66,29 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, frontend_entry),
+      filename: "index.html",
+      chunks: ["index"],
       cache: false,
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, signup_entry), // Correctly using about_entry here
+      filename: "signup.html",
+      chunks: ["signup"],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, article_entry), // Correctly using about_entry here
+      filename: "article.html",
+      chunks: ["article"],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, forum_entry), // Correctly using about_entry here
+      filename: "forum.html",
+      chunks: ["forum"],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, about_entry), // Correctly using about_entry here
+      filename: "about.html",
+      chunks: ["about"],
     }),
     new webpack.EnvironmentPlugin([
       ...Object.keys(process.env).filter((key) => {

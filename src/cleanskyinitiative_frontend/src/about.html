@@ -2,8 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>cleanskyinitiative</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body {
         margin: 0;
@@ -11,16 +10,15 @@
         box-sizing: border-box;
         font-family: Arial, sans-serif;
         position: relative;
-        background: url("sky-nature-wallpaper-phone.jpg");
+        background: url("aboutbg.png");
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
         height: 100dvh;
       }
     </style>
-    <base href="/" />
-
-    <link rel="stylesheet" href="main.css" />
+    <title>Document</title>
+    <link rel="stylesheet" href="about.css" />
   </head>
   <body>
     <nav class="navbar">
@@ -50,29 +48,22 @@
         </li>
       </ul>
     </nav>
+    <div class="about__wrapper">
+      <div class="content">
+        "We are a platform built on sustainability, aiming to cultivate a
+        vibrant community where we leverage real-time data to inform and engage
+        individuals. Here, you can share your concerns, ideas, and articles, not
+        necessarily confined to sustainability topics. As community members, you
+        can sign up to become part of our collective endeavor. Stay tuned as we
+        continue to enrich our platform with more features."
+      </div>
 
-    <div class="form__getCity-wrapper">
       <div class="logo">
         <img src="logo-removebg-preview.png" alt="Logo" />
-        <p class="logo_text">CleanSky Initiative</p>
-      </div>
-
-      <form class="form__getCity">
-        <label class="label__getCity" for="">City Name: </label>
-        <input type="text" class="input__getCity" />
-        <button type="submit" class="btn__getCity">Get City Data</button>
-        <p class="pollution__desc">
-          Please enter your city to learn about the air pollution in your city.
+        <p class="logo_text" style="font-style: italic">
+          Welcome to CleanSky Initiative
         </p>
-      </form>
-
-      <div class="pollution__info__wrapper">
-        <div class="logo">
-          <img src="logo-removebg-preview.png" alt="Logo" />
-        </div>
-        <p class="pollution__info">Air pollution in your city = 00</p>
       </div>
     </div>
-    <script type="module" src="index.js"></script>
   </body>
 </html>

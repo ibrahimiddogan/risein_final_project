@@ -4,9 +4,12 @@ type Member = record{
     email:text;
     registration_month:nat32;
 };
+type ForumMessage= record{
+    author: text;
+    content: text;
+};
 
 type Article = record{
-    author_name: text;
     email: text;
     tittle:text;
     content:text;
@@ -17,6 +20,7 @@ type Errors = variant {
     SameEmail:text;
     NotAllowed:text;
     TittleNot:text;
+    InvalidEmail:text;
 };
 type Ok = variant {
     Success: text;
@@ -35,10 +39,15 @@ type Badgets = variant {
 service :{
     "create_member":(text,text,text)-> (Result);
     "list_members_name": () -> (vec text) query;
+    "list_members": () -> (vec Member) query;
+    "list_members_email": () -> (vec text) query;
     "list_members_lastname": () -> (vec text) query;
     "get_new_members_name":()->(vec text) query;
     "get_new_members_lastname":()->(vec text) query;
-    "publish_article":(text,text,text,text)->(Result);
-    "get_article":()->(vec text) query;
-    "get_events__city_from_api":(text)->(text);
+    "publish_article":(text,text,text)->(Result);
+    "get_article":()->(vec Article) query;
+    "get_events_city_from_api":(text)->(text);
+    "delete_member_by_email":(text)->(Result);
+    "get_forum_messages":()->(vec ForumMessage) query; 
+    "post_forum_message":(text,text)->(Result);
 };
