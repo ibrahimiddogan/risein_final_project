@@ -144,3 +144,29 @@
   margin-bottom: 20px;
   text-align: center;
 }
+
+.btn_donate {
+  position: absolute;
+  right: 0;
+  padding: 20px 30px;
+  margin-top: 25px;
+  margin-right: 25px;
+  background-color: rgba(0, 255, 106, 0.749);
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  letter-spacing: 1px;
+  border-radius: 12px;
+  border-bottom: 4px solid rgba(13, 255, 207, 1);
+  transition: all;
+  transition-duration: 1s;
+  cursor: pointer;
+  /* color: rgba(13, 255, 207, 1); */
+}
+
+.btn_donate:hover {
+  background-color: rgba(0, 255, 106, 1);
+  color: #fff;
+  text-shadow: 3px #fff;
+  border-bottom: 4px solid rgba(13, 255, 207, 0.427);
+}

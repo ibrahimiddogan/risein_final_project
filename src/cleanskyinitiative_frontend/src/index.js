@@ -32,6 +32,11 @@ async function get_events_city_from_api(cityText) {
   }
 }
 
+const btn_donate = document.querySelector(".btn_donate");
+btn_donate.addEventListener("click", () => {
+  alert("Coming soon ...");
+});
+
 // document.querySelector("form").addEventListener("submit", async (e) => {
 //   e.preventDefault();
 //   const button = e.target.querySelector("button");

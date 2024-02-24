@@ -26,7 +26,7 @@ async function send_message(email, content) {
   );
   console.log(api_data);
   if (api_data.Ok) {
-    alert("Mesaj başarıyla gönderildi !");
+    alert("Message sent successfully !");
   } else if (api_data.Err.MissingBlank) {
     // text_info.textContent = "Aynı email yada boşluklardan birini doldurmadınız"
     alert(api_data.Err.MissingBlank);

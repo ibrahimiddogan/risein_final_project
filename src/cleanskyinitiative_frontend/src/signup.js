@@ -28,7 +28,7 @@ async function create_member(first_name, last_name, email) {
     email
   );
   if (api_data.Ok) {
-    text_info.textContent = "Kullanıcı başarılı oluşturuldu";
+    text_info.textContent = "User created successfully.";
     text_info.style.color = "greenyellow";
   } else if (api_data.Err.MissingBlank) {
     // text_info.textContent = "Aynı email yada boşluklardan birini doldurmadınız"

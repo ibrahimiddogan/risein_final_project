@@ -32,7 +32,7 @@ async function publish_article(email, title, content) {
     content
   );
   if (api_data.Ok) {
-    text_info.textContent = "Makale başarıyla yayınlandı !";
+    text_info.textContent = "Article published successfully. !";
     text_info.style.color = "greenyellow";
   } else if (api_data.Err.MissingBlank) {
     // text_info.textContent = "Aynı email yada boşluklardan birini doldurmadınız"
